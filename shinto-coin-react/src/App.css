@@ -1,0 +1,13 @@
+.App {
+  padding: 25px;
+}
+.navItem {
+  height: 30px;
+  width: 125px;
+  list-style-type: none;
+  display: inline-block;
+  background-color: lightgray;
+  border-radius: 5px;
+  text-align: center;
+  margin: 5px;
+}
