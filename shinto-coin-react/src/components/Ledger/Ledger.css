@@ -1,0 +1,14 @@
+.ledger {
+    width: 750px;
+}
+.coinLedger {
+width: 650px;
+border: 1px solid black;
+}
+.tableTitle {
+    background-color: lightgray;
+}
+th {
+    width: 100px;
+    text-align: left;
+}

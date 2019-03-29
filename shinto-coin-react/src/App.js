@@ -19,57 +19,82 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      action:"",
-      minedCoins: 0,
-      coinsBought: 0,
-      coinsSold: 0,
-      currentValue: 0,
+      action: "",
+      amount: 0,
+      value: 0,
       coinsOwned: 0,
-      coins: null
+      ledgers: []
     }
   }
 
-  retrieveCoinRecords = () => {
-
+  componentDidMount() {
+    // console.log("componentDidMount")
+    axios
+      .get("http://localhost:1337/ledgers")
+      .then((response) => {
+        // console.log("didmount response:",response);
+        this.setState({
+          ledgers: response.data.ledgers,
+        })
+      })
   }
 
   //stores a random number of coins when user mines for coins
   mineForCoins = (numOfTries) => {
     let coins = (Math.floor(Math.random() * numOfTries));
+    let newValue = this.state.value + parseInt(coins);
+    let newCoins = this.state.coinsOwned + parseInt(coins)
+
     this.setState({
       action: "Mined",
-      minedCoins: coins,
-      // coinsOwned: this.state.coinsOwned + parseInt(coins),
-      currentValue: this.state.currentValue + parseInt(coins),
-      // history: [...this.state.history, ]
-    });
-    console.log("mined coins");
+      amount: coins,
+      coinsOwned: newCoins,
+      value: newValue,
+      // ledgers: response.data.ledgers,
+    })
+    // axios
+    //   .post("http://localhost:1337/ledgers", {
+    //     action: "Mined",
+    //     amount: coins,
+    //     coinsOwned: newCoins,
+    //     value: newValue
+    //   })
+    //   .then((mineResponse) => {
+    //     console.log("mined coins", mineResponse);
+    //     axios
+    //       .get("http://localhost:1337/ledgers")
+    //       .then((mineGetResponse) => {
+    //         console.log("didmount response:", mineGetResponse);
+    //       })
+
+    //   })
   }
 
   //stores the number of coins bough and the current value
   buyCoins = (coinsToBuy) => {
     this.setState({
-    
-      coinsBought: this.state.coinsBought + parseInt(coinsToBuy),
+      action: "Bought",
+      amount: this.state.amount + parseInt(coinsToBuy),
       coinsOwned: this.state.coinsOwned + parseInt(coinsToBuy),
-      currentValue: this.state.currentValue * parseInt(coinsToBuy),
+      value: this.state.value * parseInt(coinsToBuy),
     })
     console.log("coins bought")
   }
 
   //stores the number of coins sold and the current value
   sellCoins = (selling) => {
-      this.setState({
-        coinsSold: this.state.coinsSold + parseInt(selling),
-        coinsOwned: this.state.coinsOwned - parseInt(selling),
-        currentValue: this.state.currentValue - parseInt(selling),
-      })
+    this.setState({
+      action: "Sold",
+      amount: this.state.amount + parseInt(selling),
+      coinsOwned: this.state.coinsOwned - parseInt(selling),
+      value: this.state.value - parseInt(selling),
+    })
     console.log("sold coins");
   }
 
 
   render() {
-    console.log("current state", this.state)
+    console.log("current state", this.state);
 
     return (
       <div className="App">
@@ -88,10 +113,10 @@ class App extends Component {
               path="/mine"
               render={(props) => {
                 return (<MineCoins
-                  minedCoins={this.state.minedCoins}
-                  currentValue={this.state.currentValue}
+                  amount={this.state.amount}
+                  value={this.state.value}
                   coinsOwned={this.state.coinsOwned}
-                  mineForCoins={this.mineForCoins} ß
+                  mineForCoins={this.mineForCoins} 
                 />)
               }}
             />
@@ -100,7 +125,7 @@ class App extends Component {
               render={(props) => {
                 return (<BuyCoins
                   coinsBought={this.state.coinsBought}
-                  currentValue={this.state.currentValue}
+                  value={this.state.value}
                   coinsOwned={this.state.coinsOwned}
                   buyCoins={this.buyCoins}
                 />)
@@ -111,23 +136,19 @@ class App extends Component {
               render={(props) => {
                 return (<SellCoins
                   coinsSold={this.state.coinsSold}
-                  currentValue={this.state.currentValue}
+                  value={this.state.value}
                   coinsOwned={this.state.coinsOwned}
                   sellCoins={this.sellCoins}
                 />)
               }}
             />
-            <Route 
-            path="/ledger" 
-            render={(props) => {
-              return (<Ledger
-                minedCoins={this.state.minedCoins}
-                coinsBought={this.state.coinsBought}
-                coinsSold={this.state.coinsSold}
-                currentValue={this.state.currentValue}
-                coinsOwned={this.state.coinsOwned}
-              />)
-            }}
+            <Route
+              path="/ledger"
+              render={(props) => {
+                return (<Ledger
+                  ledgers={this.state.ledgers}
+                />)
+              }}
             />
           </div>
         </BrowserRouter>

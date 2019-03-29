@@ -5,7 +5,6 @@ class MineCoins extends Component {
         super(props);
         this.state = {
             inputNum: 0,
-            coins: []
         }
     }
 
@@ -23,7 +22,7 @@ class MineCoins extends Component {
     }
 
     render() {
-        console.log("You found this many coins: ", this.props.minedCoins);
+        console.log("You found this many coins: ", this.props.amount);
         // console.log("current value", this.props)
         // set variables to arrow functiont to create HTML components
         return (
@@ -40,7 +39,7 @@ class MineCoins extends Component {
                     <input type="submit" value="Mine" />
                 </form>
 
-                {/* <h3 className="displayTitle">You now have some coin {this.state.minedCoins}</h3> */}
+                <h3 className="displayTitle">You found {this.props.amount} coins!</h3>
             </div>
         )
     }

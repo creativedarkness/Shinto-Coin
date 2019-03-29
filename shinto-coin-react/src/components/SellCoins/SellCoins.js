@@ -34,7 +34,7 @@ handleSubmit = (event) => {
             <div>
                 <h1>Sell ShintoCoins</h1>
                 <p>
-                    Current ShintoCoin Value: ${this.props.currentValue}.00
+                    Current ShintoCoin Value: ${this.props.value}.00
                 </p>
                 <p>
                     Number of ShintoCoins Owned: {this.props.coinsOwned}

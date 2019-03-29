@@ -29,7 +29,7 @@ class BuyCoins extends Component {
             <div>
                 <h1>Buy Conins here</h1>
                 <p>
-                    Current ShintoCOin Value: ${this.props.currentValue}.00
+                    Current ShintoCOin Value: ${this.props.value}.00
                 </p>
                 <p>
                     Number of ShintoCoins Owned: {this.props.coinsOwned}
